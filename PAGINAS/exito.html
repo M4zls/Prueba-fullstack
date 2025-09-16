@@ -8,14 +8,32 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
   <div class="container py-5 text-center">
-    <div class="alert alert-success">
-      <h2 class="mb-3">¡Pago exitoso!</h2>
-      <p>Gracias por tu compra. Pronto recibirás tu pedido.</p>
-      <a href="../index.html" class="btn btn-dark mt-3">Volver al inicio</a>
+    <div id="exito-loader" class="my-5">
+      <div class="spinner-border text-success" style="width: 4rem; height: 4rem;" role="status">
+        <span class="visually-hidden">Procesando...</span>
+      </div>
+      <div class="mt-3">Procesando tu pago...</div>
+    </div>
+    <div id="exito-msg" style="display:none;">
+      <div class="alert alert-success">
+        <h2 class="mb-3">¡Pago exitoso!</h2>
+        <p>Gracias por tu compra. Pronto recibirás tu pedido.</p>
+        <a href="../index.html" class="btn btn-dark mt-3">Volver al inicio</a>
+      </div>
     </div>
   </div>
   <footer class="bg-dark text-white text-center p-md-3 mt-auto">
     <p>&copy; 2025 FLEX. Todos los derechos reservados.</p>
   </footer>
+  <script>
+    // Animación de carga y redirección
+    setTimeout(function() {
+      document.getElementById('exito-loader').style.display = 'none';
+      document.getElementById('exito-msg').style.display = 'block';
+      setTimeout(function() {
+        window.location.href = '../index.html';
+      }, 2000);
+    }, 1800);
+  </script>
 </body>
-</html> 
+</html>

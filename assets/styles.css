@@ -1,3 +1,8 @@
+/* Login page styles (copiados del <style> de Login.html) */
+body.login-bg { background: #f7f7f7; }
+.login-container { max-width: 400px; margin: 60px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 16px #0001; padding: 32px; }
+.login-title { font-weight: bold; font-size: 2rem; margin-bottom: 1.5rem; text-align:center; }
+.toggle-link { cursor:pointer; color:#007bff; text-decoration:underline; }
 /* Mejoras visuales para la tabla del resumen del carrito en el checkout */
 #resumen-carrito .summary-table {
     width: 100%;

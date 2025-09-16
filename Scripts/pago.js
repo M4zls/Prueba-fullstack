@@ -59,46 +59,47 @@ function renderResumenCarrito() {
 document.addEventListener('DOMContentLoaded', function() {
   renderResumenCarrito();
   // --- Enviar datos y monto al backend para iniciar pago ---
-  const form = document.getElementById('form-pago');
-  if (form) {
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const datos = Object.fromEntries(new FormData(form));
-      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-      if (!carrito.length) return alert('El carrito está vacío.');
-      // Suma total
-      let total = carrito.reduce((acc, item) => acc + (parseInt((item.precio||'').replace(/[^\d]/g, '')) || 0) * (item.cantidad||1), 0);
-      // Puedes guardar los datos del usuario en localStorage si quieres persistencia
-      localStorage.setItem('datosPago', JSON.stringify(datos));
-      // Llama al backend para iniciar pago
-      try {
-        const buyOrder = 'orden_' + Date.now();
-        const sessionId = 'session_' + Date.now();
-        const returnUrl = 'http://localhost:3001/webpay/commit';
-        const response = await fetch('http://localhost:3001/webpay/create', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            amount: total,
-            buyOrder,
-            sessionId,
-            returnUrl
-          })
-        });
-        const data = await response.json();
-        if (data.url && data.token) {
-          const formPago = document.createElement('form');
-          formPago.action = data.url;
-          formPago.method = 'POST';
-          formPago.innerHTML = `<input type="hidden" name="token_ws" value="${data.token}">`;
-          document.body.appendChild(formPago);
-          formPago.submit();
-        } else {
-          alert('Error iniciando pago: ' + (data.error || 'Desconocido'));
+    // --- Validación de formulario y redirección ---
+    const form = document.getElementById('form-pago');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const msg = document.getElementById('form-pago-msg');
+        msg.textContent = '';
+        const datos = Object.fromEntries(new FormData(form));
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        if (!carrito.length) {
+          msg.textContent = 'El carrito está vacío.';
+          return;
         }
-      } catch (e) {
-        alert('No se pudo conectar con el backend. ¿Está corriendo en localhost:3001?');
-      }
-    });
-  }
+        // Validaciones manuales
+        if (!datos.nombre || datos.nombre.length < 3) return msg.textContent = 'Ingresa tu nombre completo.';
+        if (!datos.correo || !/^\S+@\S+\.\S+$/.test(datos.correo)) return msg.textContent = 'Correo electrónico inválido.';
+        if (!datos.telefono || datos.telefono.replace(/\D/g,'').length < 8) return msg.textContent = 'Teléfono inválido.';
+        if (!datos.direccion || datos.direccion.length < 5) return msg.textContent = 'Dirección inválida.';
+        if (!datos.region) return msg.textContent = 'Ingresa tu región.';
+        if (!datos.ciudad) return msg.textContent = 'Ingresa tu ciudad.';
+        if (!datos.tarjeta || !/^\d{4} ?\d{4} ?\d{4} ?\d{4}$/.test(datos.tarjeta)) return msg.textContent = 'Número de tarjeta inválido.';
+        if (!datos.vencimiento || !/^(0[1-9]|1[0-2])\/\d{2}$/.test(datos.vencimiento)) return msg.textContent = 'Fecha de vencimiento inválida (MM/AA).';
+        if (!datos.cvv || !/^\d{3,4}$/.test(datos.cvv)) return msg.textContent = 'CVV inválido.';
+        if (!datos.nombre_tarjeta || datos.nombre_tarjeta.length < 3) return msg.textContent = 'Nombre del titular inválido.';
+
+        // Si todo es válido, redirigir a exito.html
+        localStorage.setItem('datosPago', JSON.stringify(datos));
+        // Guardar pedido en localStorage con estado
+        let pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
+        let user = JSON.parse(localStorage.getItem('userLogged') || 'null');
+        let total = carrito.reduce((acc, item) => acc + (parseInt((item.precio||'').replace(/[^\d]/g, '')) || 0) * (item.cantidad||1), 0);
+        pedidos.push({
+          email: (user && user.email) ? user.email : datos.correo,
+          nombre: (user && user.nombre) ? user.nombre : datos.nombre,
+          fecha: new Date().toLocaleString('es-CL'),
+          total: total,
+          items: carrito,
+          estado: 'Pendiente'
+        });
+        localStorage.setItem('pedidos', JSON.stringify(pedidos));
+        window.location.href = 'exito.html';
+      });
+    }
 });

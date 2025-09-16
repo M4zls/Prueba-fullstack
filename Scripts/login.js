@@ -1,0 +1,70 @@
+// Script de login y registro para Login.html
+
+document.addEventListener('DOMContentLoaded', function() {
+  const loginForm = document.getElementById('login-form');
+  const registerForm = document.getElementById('register-form');
+  const showRegister = document.getElementById('show-register');
+  const showLogin = document.getElementById('show-login');
+  const msg = document.getElementById('login-msg');
+  const spinner = document.getElementById('login-spinner');
+
+  showRegister.onclick = () => {
+    loginForm.style.display = 'none';
+    registerForm.style.display = 'block';
+    msg.textContent = '';
+  };
+  showLogin.onclick = () => {
+    registerForm.style.display = 'none';
+    loginForm.style.display = 'block';
+    msg.textContent = '';
+  };
+
+  // Guardar usuarios como array en localStorage
+  function getUsers() {
+    return JSON.parse(localStorage.getItem('users') || '[]');
+  }
+  function saveUsers(users) {
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+
+  registerForm.onsubmit = function(e) {
+    e.preventDefault();
+    const nombre = registerForm.nombre.value;
+    const email = registerForm.email.value;
+    const password = registerForm.password.value;
+    if (!nombre || !email || !password) return;
+    let users = getUsers();
+    if (users.some(u => u.email === email)) {
+      msg.textContent = 'Ese correo ya está registrado.';
+      return;
+    }
+    users.push({nombre, email, password});
+    saveUsers(users);
+    msg.textContent = '¡Registro exitoso! Ahora puedes iniciar sesión.';
+    registerForm.reset();
+    setTimeout(() => {
+      registerForm.style.display = 'none';
+      loginForm.style.display = 'block';
+      msg.textContent = '';
+    }, 1200);
+  };
+
+  loginForm.onsubmit = function(e) {
+    e.preventDefault();
+    const email = loginForm.email.value;
+    const password = loginForm.password.value;
+    const users = getUsers();
+    const user = users.find(u => u.email === email && u.password === password);
+    if (user) {
+      msg.textContent = '';
+      spinner.style.display = 'block';
+      localStorage.setItem('userLogged', JSON.stringify(user));
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1200);
+    } else {
+      msg.textContent = 'Correo o contraseña incorrectos.';
+      spinner.style.display = 'none';
+    }
+  };
+});
