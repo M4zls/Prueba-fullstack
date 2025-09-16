@@ -27,12 +27,28 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('users', JSON.stringify(users));
   }
 
+  // Funciones de validación
+  function validarEmail(email) {
+    return /^([\w\.-]+)@(gmail\.com|duocuc\.cl|profesor\.duocuc\.cl)$/i.test(email);
+  }
+  function validarPassword(pw) {
+    return typeof pw === 'string' && pw.length >= 4 && pw.length <= 10;
+  }
+
   registerForm.onsubmit = function(e) {
     e.preventDefault();
     const nombre = registerForm.nombre.value;
-    const email = registerForm.email.value;
+    const email = registerForm.email.value.trim();
     const password = registerForm.password.value;
     if (!nombre || !email || !password) return;
+    if (!validarEmail(email)) {
+      msg.textContent = 'El correo debe ser gmail.com, duocuc.cl o profesor.duocuc.cl';
+      return;
+    }
+    if (!validarPassword(password)) {
+      msg.textContent = 'La contraseña debe tener entre 4 y 10 caracteres.';
+      return;
+    }
     let users = getUsers();
     if (users.some(u => u.email === email)) {
       msg.textContent = 'Ese correo ya está registrado.';
@@ -51,8 +67,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
   loginForm.onsubmit = function(e) {
     e.preventDefault();
-    const email = loginForm.email.value;
+    const email = loginForm.email.value.trim();
     const password = loginForm.password.value;
+    if (!validarEmail(email)) {
+      msg.textContent = 'El correo debe ser gmail.com, duocuc.cl o profesor.duocuc.cl';
+      return;
+    }
+    if (!validarPassword(password)) {
+      msg.textContent = 'La contraseña debe tener entre 4 y 10 caracteres.';
+      return;
+    }
     const users = getUsers();
     const user = users.find(u => u.email === email && u.password === password);
     if (user) {

@@ -21,6 +21,7 @@
                 <input type="password" class="form-control" name="password" required>
             </div>
             <button type="submit" class="btn btn-dark w-100">Iniciar sesión</button>
+            <button type="button" class="btn btn-outline-secondary w-100 mt-2" id="guest-btn">Continuar como invitado</button>
             <div class="text-center mt-3">
                 ¿No tienes cuenta? <span class="toggle-link" id="show-register">Regístrate</span>
             </div>
@@ -52,5 +53,12 @@
         </div>
     </div>
     <script src="Scripts/login.js"></script>
+    <script>
+        // Acción para el botón de invitado
+        document.getElementById('guest-btn').onclick = function() {
+            // Redirigir o manejar lógica de invitado aquí
+            window.location.href = 'index.html'; // Cambia esto según la página de destino para invitados
+        };
+    </script>
 </body>
 </html>
