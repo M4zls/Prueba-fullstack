@@ -21,6 +21,14 @@
 .form-section {
     border-right: 1px solid #eee;
 }
+.summary-img {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  background: #f8f8f8;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
 @media (max-width: 900px) {
     .form-section {
         border: none;
