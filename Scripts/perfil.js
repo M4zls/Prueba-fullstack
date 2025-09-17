@@ -1,5 +1,14 @@
-// Scripts para la página de perfil de usuario FLEX
-// Muestra datos del usuario, permite cambiar contraseña y lista pedidos
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  var btnToggle = document.getElementById('btn-toggle-pass');
+  if (btnToggle) {
+    btnToggle.onclick = function() {
+      const cont = document.getElementById('pass-form-container');
+      if (cont) cont.style.display = cont.style.display === 'none' ? 'block' : 'none';
+    };
+  }
+});
 
 document.addEventListener('DOMContentLoaded', function() {
   const user = JSON.parse(localStorage.getItem('userLogged'));
@@ -15,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  // Mostrar datos minimalista
   perfilInfo.innerHTML = `
     <div class="d-flex flex-column align-items-center gap-2">
       <div style="background:#f5f5f5;border-radius:50%;width:80px;height:80px;display:flex;align-items:center;justify-content:center;">
@@ -26,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   `;
 
-  // Cambiar contraseña
   formPass.onsubmit = function(e) {
     e.preventDefault();
     msg.textContent = '';
@@ -45,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
       msg.textContent = 'Las contraseñas no coinciden.';
       return;
     }
-    // Actualizar en localStorage
     let users = JSON.parse(localStorage.getItem('users') || '[]');
     const idx = users.findIndex(u => u.email === user.email);
     if (idx !== -1) {
@@ -58,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 
-  // Mostrar pedidos (simulado: busca en localStorage 'pedidos' por email)
   let pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
   let misPedidos = pedidos.filter(p => p.email === user.email);
   if (!misPedidos.length) {

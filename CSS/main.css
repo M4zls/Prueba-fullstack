@@ -1,0 +1,43 @@
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+.card img {
+    width: 180px;
+    height: 130px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+.back{
+    background-color: #000000c6;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.titulo1{
+    color: white;
+}
+
+.precio1{
+    color: white;
+}
+
+.resultado{
+    color: darkblue;
+}
+
+.mi-navbar {
+    background-color: #868282 ;
+}
+
+.navbar-brand {
+    color: rgb(6, 6, 6) ;
+}
+
+.nav-link {
+    color: rgb(0, 0, 0) ;
+}

@@ -1,4 +1,13 @@
-// Script de login y registro para Login.html
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  var guestBtn = document.getElementById('guest-btn');
+  if (guestBtn) {
+    guestBtn.onclick = function() {
+      window.location.href = 'index.html'; // Cambia esto según la página de destino para invitados
+    };
+  }
+});
 
 document.addEventListener('DOMContentLoaded', function() {
   const loginForm = document.getElementById('login-form');
@@ -19,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
     msg.textContent = '';
   };
 
-  // Guardar usuarios como array en localStorage
   function getUsers() {
     return JSON.parse(localStorage.getItem('users') || '[]');
   }
@@ -27,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('users', JSON.stringify(users));
   }
 
-  // Funciones de validación
   function validarEmail(email) {
     return /^([\w\.-]+)@(gmail\.com|duocuc\.cl|profesor\.duocuc\.cl)$/i.test(email);
   }

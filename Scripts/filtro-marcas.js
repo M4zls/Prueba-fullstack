@@ -1,7 +1,5 @@
-// Filtro de productos por marca para index.html
 
 document.addEventListener('DOMContentLoaded', function() {
-  // 1. Detectar marcas únicas de los productos
   const cards = document.querySelectorAll('.producto-link');
   const marcas = new Set();
   cards.forEach(card => {
@@ -9,10 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (/adidas/i.test(nombre)) marcas.add('Adidas');
     if (/nike/i.test(nombre)) marcas.add('Nike');
     if (/jordan/i.test(nombre)) marcas.add('Jordan');
-    // Agrega más marcas si es necesario
   });
 
-  // 2. Crear dropdown de marcas en el header
   const nav = document.querySelector('.navbar-nav');
   if (!nav) return;
   let catLi = Array.from(nav.children).find(li => li.textContent.trim().toUpperCase().includes('CATEGORIAS'));
@@ -32,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   catLi.appendChild(menu);
 
-  // 3. Filtrar productos al hacer click en una marca
   nav.querySelectorAll('.filtro-marca').forEach(link => {
     link.onclick = function(e) {
       e.preventDefault();

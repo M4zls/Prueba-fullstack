@@ -1,17 +1,24 @@
-// --- PREVIEW DE PRODUCTO ---
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.producto-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const id = this.getAttribute('data-id');
+      if (id) {
+        window.location.href = 'PAGINAS/preview.html?id=' + encodeURIComponent(id);
+      }
+    });
+  });
+});
 if (window.location.pathname.includes('preview.html')) {
-  // --- Agregar funcionalidad al botón "Agregar al carrito" ---
   const btnAgregar = document.getElementById('preview-comprar');
   if (btnAgregar) {
     btnAgregar.onclick = function() {
-      // Obtener datos del producto actual
       const id = new URLSearchParams(window.location.search).get('id');
       const tallaSeleccionada = document.querySelector('#preview-tallas .btn.active')?.textContent || null;
       const cantidad = 1;
       const producto = productos[id];
       if (!producto) return alert('Producto no encontrado');
       if (!tallaSeleccionada) return alert('Selecciona una talla');
-      // Construir objeto para el carrito
       const item = {
         id,
         nombre: producto.nombre,
@@ -22,11 +29,9 @@ if (window.location.pathname.includes('preview.html')) {
       };
       if (typeof agregarAlCarrito === 'function') {
         agregarAlCarrito(item);
-        // Actualizar el carrito offcanvas inmediatamente
         if (typeof renderizarCarritoPreview === 'function') {
           renderizarCarritoPreview();
         }
-        // Feedback visual rápido
         btnAgregar.textContent = '¡Agregado!';
         btnAgregar.disabled = true;
         setTimeout(() => {
@@ -38,88 +43,76 @@ if (window.location.pathname.includes('preview.html')) {
       }
     };
   }
-  
   const productos = {
     "adidas-superstar-bape": {
       nombre: "adidas Superstar Bape ABC Camo Green",
       precio: "$350.000",
       imagenes: ["../assets/adidas-Superstar-Bape-ABC-Camo-Green-Product.avif"],
       tallas: ["38", "39", "40", "41", "42", "43"],
-      descripcion: "Zapatilla icónica con colaboración Bape, edición limitada, materiales premium y diseño camuflado."
     },
     "adidas-superstar-vintage": {
       nombre: "adidas Superstar Vintage Bape White Black",
       precio: "$280.000",
       imagenes: ["../assets/adidas-Superstar-Vintage-Bape-White-Black-Product.avif"],
       tallas: ["38", "39", "40", "41", "42"],
-      descripcion: "Superstar vintage con detalles Bape, blanco y negro clásico."
     },
     "adidas-gazelle-bad-bunny": {
       nombre: "Adidas Gazelle Indoor Bad Bunny",
       precio: "$310.000",
       imagenes: ["../assets/adidas-Gazelle-Indoor-Bad-Bunny-Product.avif"],
       tallas: ["38", "39", "40", "41", "42", "43"],
-      descripcion: "Colaboración con Bad Bunny, edición limitada, estilo urbano y materiales premium."
     },
     "adidas-yeezy-500-stone-salt": {
       nombre: "Adidas Yeezy 500 Stone Salt",
       precio: "$150.000",
       imagenes: ["../assets/adidas-Yeezy-500-Stone-Salt-Product.avif"],
       tallas: ["39", "40", "41", "42", "43", "44"],
-      descripcion: "Yeezy 500 en color Stone Salt, diseño innovador y gran comodidad."
     },
     "adidas-yeezy-700-v3-blue-glow": {
       nombre: "adidas Yeezy 700 V3 Blue Glow",
       precio: "$300.000",
       imagenes: ["../assets/adidas-Yeezy-700-V3-Blue-Glow-Product.avif"],
       tallas: ["39", "40", "41", "42", "43"],
-      descripcion: "Yeezy 700 V3 con detalles que brillan en la oscuridad, edición especial."
     },
     "adidas-yeezy-boost-350-v2-zebra": {
       nombre: "adidas Yeezy Boost 350 V2 Zebra",
       precio: "$450.000",
       imagenes: ["../assets/adidas-Yeezy-Boost-350-V2-Zebra-Product.avif"],
       tallas: ["38", "39", "40", "41", "42", "43"],
-      descripcion: "Yeezy Boost 350 V2 en color Zebra, uno de los modelos más icónicos."
     },
     "nike-sb-dunk-low-supreme-94-ocean-fog": {
       nombre: "Nike Dunk Low Supreme 94 Ocean Fog",
       precio: "$320.000",
       imagenes: ["../assets/Nike-SB-Dunk-Low-Supreme-94-Ocean-Fog-Product.avif"],
       tallas: ["38", "39", "40", "41", "42", "43"],
-      descripcion: "Dunk Low edición Supreme, color Ocean Fog, estilo único y urbano."
     },
     "nike-dunk-high-wu-tang-2024": {
       nombre: "Nike Dunk High Wu Tang 2024",
       precio: "$220.000",
       imagenes: ["../assets/Nike-Dunk-High-Wu-Tang-2024-Product.avif"],
       tallas: ["39", "40", "41", "42", "43"],
-      descripcion: "Edición especial Wu Tang, diseño llamativo y coleccionable."
     },
     "nike-air-force-1-low-supreme-box-logo-black": {
       nombre: "Nike Air Force 1 Low Supreme Box Logo Black",
       precio: "$380.000",
       imagenes: ["../assets/Nike-Air-Force-1-Low-Supreme-Box-Logo-Black-Product.avif"],
-      tallas: ["38", "39", "40", "41", "42", "43", "44"],
-      descripcion: "Air Force 1 con logo Supreme, clásico renovado en negro."
+    tallas: ["38", "39", "40", "41", "42", "43", "44"],
     },
     "nike-air-trainer-1-sp-travis-scott-wheat": {
       nombre: "Nike Air Trainer 1 SP Travis Scott Wheat",
       precio: "$500.000",
       imagenes: ["../assets/Nike-Air-Trainer-1-SP-Travis-Scott-Wheat-Product.avif"],
-      tallas: ["39", "40", "41", "42", "43"],
-      descripcion: "Colaboración con Travis Scott, edición Wheat, detalles exclusivos."
+    tallas: ["39", "40", "41", "42", "43"],
     },
     "air-jordan-4-retro-og-sp-a-ma-maniere": {
       nombre: "Air Jordan 4 Retro OG SP A Ma Maniere",
       precio: "$650.000",
       imagenes: ["../assets/Air-Jordan-4-Retro-OG-SP-A-Ma-Maniere-While-You-Were-Sleeping-Womens-Product.avif"],
-      tallas: ["38", "39", "40", "41", "42", "43"],
-      descripcion: "Jordan 4 edición especial A Ma Maniere, lujo y exclusividad."
+    tallas: ["38", "39", "40", "41", "42", "43"],
     }
   };
 
-  // Obtener el id de la zapatilla desde la URL (?id=adidas-superstar-bape)
+  
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   const producto = productos[id];
@@ -129,7 +122,7 @@ if (window.location.pathname.includes('preview.html')) {
     document.getElementById('preview-nombre').textContent = producto.nombre;
     document.getElementById('preview-precio').textContent = producto.precio;
 
-    document.getElementById('preview-descripcion').textContent = producto.descripcion;
+  document.getElementById('preview-descripcion').textContent = '';
   
     const tallasDiv = document.getElementById('preview-tallas');
     tallasDiv.innerHTML = '';
@@ -159,10 +152,10 @@ if (window.location.pathname.includes('preview.html')) {
     
     const sugerenciasDiv = document.getElementById('preview-sugerencias');
     if (sugerenciasDiv) {
-      // Filtrar productos 
+      
       const sugeridos = Object.entries(productos)
         .filter(([key]) => key !== id)
-        .slice(0, 6); //sugerencias
+  .slice(0, 6);
       sugerenciasDiv.innerHTML = '';
       sugeridos.forEach(([key, prod]) => {
         const col = document.createElement('div');
@@ -185,7 +178,6 @@ if (window.location.pathname.includes('preview.html')) {
   }
 }
 
-// --- Renderizar carrito en el offcanvas de preview.html ---
 function renderizarCarritoPreview() {
   const cont = document.getElementById('carrito-items');
   const totalSpan = document.getElementById('carrito-total');
