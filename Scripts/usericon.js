@@ -4,11 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       const user = JSON.parse(localStorage.getItem('userLogged'));
       let base = '';
-      if (window.location.pathname.includes('/PAGINAS/')) base = '../';
-      if (user) {
-        window.location.href = base + 'PAGINAS/Perlfil.html';
-        return;
-      }
+        if (window.location.pathname.includes('/paginas/')) base = '../';
+        if (user) {
+          window.location.href = base + 'paginas/perfil.html';
+          return;
+        }
       let existing = document.getElementById('usericon-dropdown');
       if (existing) { existing.remove(); return; }
       const dropdown = document.createElement('div');

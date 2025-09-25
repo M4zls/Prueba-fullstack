@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       const id = this.getAttribute('data-id');
       if (id) {
-        window.location.href = 'PAGINAS/preview.html?id=' + encodeURIComponent(id);
+  window.location.href = 'paginas/preview.html?id=' + encodeURIComponent(id);
       }
     });
   });
