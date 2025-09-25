@@ -6,7 +6,8 @@ function renderResumenCarrito() {
     return;
   }
   let total = 0;
-  let html = `<table class="table summary-table align-middle"><thead><tr><th></th><th>Producto</th><th>Talla</th><th>Cantidad</th><th>Subtotal</th><th></th></tr></thead><tbody>`;
+  let html = `<table class="table summary-table align-middle"><thead>
+  <tr><th>Producto</th><th>Talla</th><th>Cantidad</th><th>Subtotal</th></tr></thead><tbody>`;
   carrito.forEach((item, idx) => {
     const precioNum = parseInt((item.precio||'').replace(/[^\d]/g, '')) || 0;
     const subtotal = precioNum * (item.cantidad||1);
@@ -16,8 +17,10 @@ function renderResumenCarrito() {
       imgSrc = '../' + imgSrc.replace(/^\/+/, '');
     }
     html += `<tr>
-      <td><img src="${imgSrc}" class="summary-img"></td>
-      <td>${item.nombre}</td>
+      <td>
+      <img src="${imgSrc}" class="summary-img">
+        ${item.nombre}
+      </td>
       <td>${item.talla||'-'}</td>
       <td>
         <input type="number" min="1" value="${item.cantidad||1}" data-idx="${idx}" class="form-control form-control-sm input-cantidad" style="width:70px;">
@@ -28,7 +31,7 @@ function renderResumenCarrito() {
       </td>
     </tr>`;
   });
-  html += `</tbody><tfoot><tr><th colspan="5" class="text-end">Total</th><th>$${total.toLocaleString('es-CL')}</th></tr></tfoot></table>`;
+  html += `</tbody><tfoot><tr><th colspan="3" class="text-end">Total</th><th>$${total.toLocaleString('es-CL')}</th></tr></tfoot></table>`;
   resumen.innerHTML = html;
 
   resumen.querySelectorAll('.btn-eliminar').forEach(btn => {
